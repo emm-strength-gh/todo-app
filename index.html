@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Organizer</title>
+<title>Busy Bee 🐝</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -20,6 +20,8 @@
     --gold-soft: #fbf3df;
     --clay: #b34732;
     --clay-soft: #fae7e2;
+    --daily: #2f6d8f;
+    --daily-soft: #e4eff5;
     --border: #e2e5df;
     --border-strong: #d2d6cd;
     --shadow: 0 1px 2px rgba(27,36,32,.05), 0 8px 24px rgba(27,36,32,.06);
@@ -53,7 +55,7 @@
     content: ""; position: absolute; inset: 6px 6px auto 6px; height: 2px; background: #fff; border-radius: 2px;
     box-shadow: 0 4px 0 rgba(255,255,255,.55), 0 8px 0 rgba(255,255,255,.3);
   }
-  .actions { display: flex; gap: 8px; align-items: center; }
+  .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
 
   button {
     font-family: inherit; cursor: pointer; border: none; border-radius: 999px;
@@ -105,7 +107,9 @@
   .tile.add:hover { border-color: var(--pine); background: #eef4f1; box-shadow: none; }
   .tile.add svg { width: 18px; height: 18px; }
 
-  .stat-row { display: flex; gap: 14px; margin-top: 22px; }
+  .stat-group { margin-top: 22px; }
+  .stat-cap { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .stat-row { display: flex; gap: 14px; }
   .stat { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
   .stat .n { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 28px; }
   .stat .k { font-size: 13px; color: var(--muted); margin-top: 2px; }
@@ -155,14 +159,29 @@
   li.todo.done .check svg, .check.static svg { opacity: 1; transform: none; }
   .check.static { cursor: default; }
 
-  .todo .text { flex: 1; font-size: 15px; line-height: 1.4; }
+  .todo .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .todo .text { font-size: 15px; line-height: 1.4; }
+  .note-preview { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 12.5px; color: var(--faint); }
+  .note-preview svg { width: 12px; height: 12px; flex: none; }
+  .note-preview .pv-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  li.todo.done .note-preview, li.archived .note-preview { opacity: .8; }
   li.todo.done .text, li.archived .text { color: var(--faint); text-decoration: line-through; text-decoration-color: var(--gold); }
   .todo .meta { display: flex; align-items: center; gap: 8px; flex: none; }
   .todo .when { font-size: 12px; color: var(--faint); white-space: nowrap; }
   .badge-done { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); background: var(--gold-soft); padding: 3px 8px; border-radius: 999px; }
+  .badge-daily { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--daily); background: var(--daily-soft); padding: 3px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+  .badge-daily svg { width: 11px; height: 11px; }
+  .daily-toggle { flex: none; width: 30px; height: 30px; border-radius: 8px; background: transparent; border: 1px solid transparent; color: var(--faint); display: grid; place-items: center; }
+  .daily-toggle svg { width: 16px; height: 16px; }
+  .daily-toggle:hover { background: #fafbf9; color: var(--ink); border-color: var(--border); }
+  .daily-toggle.on { color: var(--daily); background: var(--daily-soft); border-color: #c7dde8; }
+  .todo .meta { flex-wrap: wrap; justify-content: flex-end; }
 
   li.archived { cursor: default; }
-  li.archived .row-actions { display: flex; gap: 6px; flex: none; }
+  .row-actions { display: flex; gap: 6px; flex: none; }
+  li.todo.noterow { cursor: default; }
+  .btn-row.archive { color: var(--gold); border-color: #ecd9a6; }
+  .btn-row.archive:hover { background: var(--gold-soft); color: var(--gold); }
   .btn-row { padding: 6px 12px; font-size: 12.5px; font-weight: 600; border-radius: 999px; background: transparent; border: 1px solid var(--border-strong); color: var(--muted); }
   .btn-row:hover { background: #fafbf9; color: var(--ink); }
   .btn-row.relist { color: var(--pine); border-color: #bcd2c9; }
@@ -178,6 +197,32 @@
   .btn-danger-ghost:hover { background: var(--clay-soft); }
   .btn-danger-ghost svg { width: 15px; height: 15px; }
 
+  /* ---------- Notes ---------- */
+  .note-btn { flex: none; width: 30px; height: 30px; border-radius: 8px; background: transparent; border: 1px solid transparent; color: var(--faint); display: grid; place-items: center; }
+  .note-btn svg { width: 16px; height: 16px; }
+  .note-btn:hover { background: #fafbf9; color: var(--ink); border-color: var(--border); }
+  .note-btn.has { color: var(--pine); }
+  .note-context { font-size: 14px; color: var(--muted); margin: 0 0 4px; }
+  .editor-toolbar { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px; border: 1px solid var(--border-strong); border-bottom: none; border-radius: 10px 10px 0 0; background: #fbfcfa; }
+  .tb-btn { width: 34px; height: 32px; border-radius: 7px; background: transparent; border: 1px solid transparent; color: var(--muted); display: grid; place-items: center; font-family: "Bricolage Grotesque", serif; font-size: 15px; }
+  .tb-btn:hover { background: #eef1ec; color: var(--ink); }
+  .tb-btn b { font-weight: 700; }
+  .tb-btn i { font-style: italic; }
+  .tb-btn u { text-decoration: underline; }
+  .tb-btn s { text-decoration: line-through; }
+  .tb-btn svg { width: 16px; height: 16px; }
+  .tb-sep { width: 1px; align-self: stretch; background: var(--border); margin: 2px 4px; }
+  .editor {
+    min-height: 300px; padding: 16px 18px; border: 1px solid var(--border-strong); border-radius: 0 0 10px 10px;
+    background: var(--surface); font-size: 15px; line-height: 1.6; color: var(--ink);
+    white-space: pre-wrap; word-wrap: break-word; overflow-wrap: anywhere; tab-size: 4; outline: none;
+  }
+  .editor:focus { border-color: var(--pine); box-shadow: 0 0 0 3px rgba(46,90,78,.12); }
+  .editor:empty:before { content: attr(data-placeholder); color: var(--faint); pointer-events: none; }
+  .editor ul, .editor ol { margin: 6px 0; padding-left: 24px; }
+  .editor p { margin: 0 0 8px; }
+  .note-saved { font-size: 12.5px; color: var(--faint); margin: 10px 2px 0; }
+
   /* ---------- Modal ---------- */
   .modal-overlay { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(27,36,32,.42); animation: fade .15s ease both; }
   .modal-overlay.open { display: flex; }
@@ -192,6 +237,12 @@
   .modal-error { color: var(--clay); font-size: 13px; min-height: 18px; margin: 0 0 14px; }
   .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
   .modal-actions .btn-ghost, .modal-actions .btn-solid { border-radius: 999px; }
+  .type-seg { display: flex; gap: 10px; margin-bottom: 16px; }
+  .type-opt { flex: 1; text-align: left; padding: 12px 14px; border-radius: 11px; background: #fcfdfb; border: 1.5px solid var(--border-strong); display: flex; flex-direction: column; gap: 3px; }
+  .type-opt:hover { border-color: var(--faint); }
+  .type-opt.sel { border-color: var(--pine); background: #eef5f1; box-shadow: 0 0 0 3px rgba(46,90,78,.10); }
+  .type-opt .to-t { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+  .type-opt .to-s { font-size: 12px; color: var(--muted); line-height: 1.35; }
 
   /* Toast */
   .toast { position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 300; }
@@ -205,6 +256,9 @@
     main { padding-top: 28px; }
     li.archived { flex-wrap: wrap; }
     li.archived .row-actions { margin-left: 35px; }
+    li.todo.noterow { flex-wrap: wrap; }
+    li.todo.noterow .row-actions { margin-left: auto; }
+    .type-seg { flex-direction: column; }
   }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
@@ -212,15 +266,19 @@
 <body>
 
 <header class="bar">
-  <div class="brand"><span class="mark"></span> Organizer</div>
+  <div class="brand"><span class="mark"></span> Busy Bee 🐝</div>
   <div class="actions" id="homeActions">
-    <button class="chip" id="openBtn" title="Import entries from a CSV file">
+    <button class="chip" id="openBtn" title="Open a saved file (.json or .csv)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg>
       Open
     </button>
-    <button class="chip" id="saveBtn" title="Export entries to a CSV file">
+    <button class="chip" id="saveBtn" title="Save a full backup (.json)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 3v5h7"/><path d="M12 17v-5"/><path d="m9 14 3 3 3-3"/></svg>
       Save
+    </button>
+    <button class="chip" id="csvBtn" title="Export a spreadsheet-friendly CSV">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5"/><path d="M8 13h8"/><path d="M8 17h8"/><path d="M12 13v8"/></svg>
+      CSV
     </button>
   </div>
   <div class="actions" id="listActions" style="display:none">
@@ -229,21 +287,38 @@
       Home
     </button>
   </div>
+  <div class="actions" id="noteActions" style="display:none">
+    <button class="chip primary" id="noteBackBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Back
+    </button>
+  </div>
 </header>
 
-<input type="file" id="fileInput" accept=".csv,text/csv" style="display:none" />
+<input type="file" id="fileInput" accept=".json,.csv,application/json,text/csv" style="display:none" />
 
 <main>
   <!-- HOME -->
   <section class="view active home" id="homeView">
-    <p class="eyebrow">Your day, in order</p>
+    <p class="eyebrow" id="todayDate">Your day, in order</p>
     <h1>A quiet place to keep<br />the work that matters.</h1>
-    <p class="lede">Make a list for anything, check things off as you go, and carry it all between days with a single CSV file.</p>
+    <p class="lede">Make a list for anything, check things off as you go, and keep a full backup you can carry between devices.</p>
     <div class="tiles" id="tiles"></div>
-    <div class="stat-row">
-      <div class="stat"><div class="n" id="statTotal">0</div><div class="k">Total todos</div></div>
-      <div class="stat"><div class="n" id="statDone">0</div><div class="k">Completed</div></div>
-      <div class="stat"><div class="n" id="statOpen">0</div><div class="k">Still open</div></div>
+    <div class="stat-group">
+      <p class="stat-cap">Todos</p>
+      <div class="stat-row">
+        <div class="stat"><div class="n" id="statTotal">0</div><div class="k">Total todos</div></div>
+        <div class="stat"><div class="n" id="statDone">0</div><div class="k">Completed</div></div>
+        <div class="stat"><div class="n" id="statOpen">0</div><div class="k">Still open</div></div>
+      </div>
+    </div>
+    <div class="stat-group" id="notesStats" style="display:none">
+      <p class="stat-cap">Notes</p>
+      <div class="stat-row">
+        <div class="stat"><div class="n" id="statNotesTotal">0</div><div class="k">Total notes</div></div>
+        <div class="stat"><div class="n" id="statNotesActive">0</div><div class="k">Active</div></div>
+        <div class="stat"><div class="n" id="statNotesArchived">0</div><div class="k">Archived</div></div>
+      </div>
     </div>
   </section>
 
@@ -253,7 +328,7 @@
     <p class="section-sub" id="listSub"></p>
 
     <div class="panel">
-      <div class="panel-head"><h2>Add a todo</h2></div>
+      <div class="panel-head"><h2 id="addPanelTitle">Add a todo</h2></div>
       <div class="composer">
         <input type="text" id="todoInput" placeholder="Write a short description…" maxlength="200" />
         <button class="btn-solid" id="addBtn">Add</button>
@@ -293,16 +368,56 @@
       </button>
     </div>
   </section>
+
+  <!-- NOTE (reused for every item) -->
+  <section class="view" id="noteView">
+    <h2 class="section-head">Notes</h2>
+    <p class="note-context">For: <b id="noteItemText"></b></p>
+    <p class="section-sub">Jot down anything extra. Newlines, tabs, and formatting are kept.</p>
+
+    <div class="panel" style="padding:0;overflow:hidden">
+      <div class="editor-toolbar" id="editorToolbar">
+        <button class="tb-btn" data-cmd="bold" title="Bold (Ctrl/⌘+B)"><b>B</b></button>
+        <button class="tb-btn" data-cmd="italic" title="Italic (Ctrl/⌘+I)"><i>I</i></button>
+        <button class="tb-btn" data-cmd="underline" title="Underline (Ctrl/⌘+U)"><u>U</u></button>
+        <button class="tb-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn" data-cmd="insertUnorderedList" title="Bullet list">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+        </button>
+        <button class="tb-btn" data-cmd="insertOrderedList" title="Numbered list">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h11"/><path d="M10 12h11"/><path d="M10 18h11"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+        </button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn" data-cmd="removeFormat" title="Clear formatting">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M5 20h6"/><path d="M13 4 8 20"/><path d="m15 15 6 6"/><path d="m21 15-6 6"/></svg>
+        </button>
+      </div>
+      <div class="editor" id="noteEditor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Write your notes here…"></div>
+    </div>
+    <p class="note-saved" id="noteSaved">Saved automatically as you type.</p>
+  </section>
 </main>
 
 <!-- New list modal -->
 <div class="modal-overlay" id="addModal">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addTitle">
     <h3 id="addTitle">New list</h3>
-    <p class="modal-sub">Give it a title and a short description. It becomes a button on the home screen.</p>
+    <p class="modal-sub">Pick a type and give it a title. A short description is optional. It becomes a button on the home screen.</p>
+    <label>Type</label>
+    <div class="type-seg" id="typeSeg">
+      <button type="button" class="type-opt sel" data-type="todo">
+        <span class="to-t">Todo</span>
+        <span class="to-s">Tasks you check off &amp; can repeat daily</span>
+      </button>
+      <button type="button" class="type-opt" data-type="notes">
+        <span class="to-t">Notes</span>
+        <span class="to-s">Plain notes to archive &amp; relist</span>
+      </button>
+    </div>
     <label for="newTitle">Title</label>
     <input id="newTitle" type="text" maxlength="40" placeholder="e.g. Coaching" autocomplete="off" />
-    <label for="newDesc">Description</label>
+    <label for="newDesc">Description <span style="color:var(--faint);font-weight:400">(optional)</span></label>
     <input id="newDesc" type="text" maxlength="80" placeholder="e.g. Programming and athlete check-ins" autocomplete="off" />
     <p class="modal-error" id="addError"></p>
     <div class="modal-actions">
@@ -366,11 +481,68 @@
     try { return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" }); }
     catch (e) { return ""; }
   }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function dayKeyOf(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function todayKey() { return dayKeyOf(new Date()); }
+  function localDayKey(iso) { if (!iso) return ""; try { return dayKeyOf(new Date(iso)); } catch (e) { return ""; } }
+
+  // Reset any daily-recurring item that was completed on a previous local day.
+  function resetDailies() {
+    var tk = todayKey(), changed = false;
+    DATA.lists.forEach(function (l) {
+      l.items.forEach(function (t) {
+        if (t.daily && t.done && !t.archived && localDayKey(t.completed) !== tk) {
+          t.done = false; t.completed = ""; changed = true;
+        }
+      });
+    });
+    if (changed) save();
+    return changed;
+  }
+
+  // ---------- Notes helpers ----------
+  function notesHasContent(html) {
+    if (!html) return false;
+    var t = String(html).replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").trim();
+    return t.length > 0;
+  }
+  // Plain-text, single-line preview of a note (entities decoded, whitespace collapsed).
+  function notesPreview(html) {
+    if (!html) return "";
+    var d = document.createElement("div");
+    d.innerHTML = sanitizeNotes(String(html));
+    return (d.textContent || "").replace(/\s+/g, " ").trim();
+  }
+  // Whitelist sanitizer for note HTML (guards content arriving via imported CSVs).
+  var ALLOWED_TAGS = { B:1, STRONG:1, I:1, EM:1, U:1, S:1, STRIKE:1, BR:1, DIV:1, P:1, UL:1, OL:1, LI:1, SPAN:1 };
+  function sanitizeNotes(html) {
+    var box = document.createElement("div");
+    box.innerHTML = String(html || "");
+    (function walk(node) {
+      var children = Array.prototype.slice.call(node.childNodes);
+      children.forEach(function (child) {
+        if (child.nodeType === 1) { // element
+          if (!ALLOWED_TAGS[child.tagName]) {
+            // replace disallowed element with its text content
+            var txt = document.createTextNode(child.textContent || "");
+            node.replaceChild(txt, child);
+            return;
+          }
+          // strip all attributes (no styles, no handlers, no hrefs)
+          for (var i = child.attributes.length - 1; i >= 0; i--) child.removeAttribute(child.attributes[i].name);
+          walk(child);
+        } else if (child.nodeType !== 3) { // not text -> drop (comments etc.)
+          node.removeChild(child);
+        }
+      });
+    })(box);
+    return box.innerHTML;
+  }
 
   function seedBuiltins() {
     return [
-      { id: "daily", title: "Daily Work", desc: "Add todos, track progress, mark them done", accent: 0, builtin: true, items: [] },
-      { id: "must", title: "Must Do", desc: "Your non-negotiables — same list, higher priority", accent: 1, builtin: true, items: [] }
+      { id: "daily", title: "Daily Work", desc: "Add todos, track progress, mark them done", accent: 0, builtin: true, type: "todo", items: [] },
+      { id: "must", title: "Must Do", desc: "Your non-negotiables — same list, higher priority", accent: 1, builtin: true, type: "todo", items: [] }
     ];
   }
   function normItems(arr) {
@@ -381,7 +553,9 @@
         done: !!t.done,
         created: t.created || new Date().toISOString(),
         completed: t.completed || (t.done ? (t.created || "") : ""),
-        archived: !!t.archived
+        archived: !!t.archived,
+        daily: !!t.daily,
+        notes: typeof t.notes === "string" ? t.notes : ""
       };
     });
   }
@@ -392,6 +566,21 @@
       DATA.lists.splice(idx, 0, seedBuiltins()[1]);
     }
   }
+  // Normalize a raw lists array (from storage or an imported JSON file).
+  function hydrateLists(arr) {
+    return (Array.isArray(arr) ? arr : []).map(function (l, i) {
+      var bi = l.id === "daily" || l.id === "must";
+      return {
+        id: l.id || ("l_" + uid()),
+        title: l.title || ("List " + (i + 1)),
+        desc: l.desc || "",
+        accent: typeof l.accent === "number" ? l.accent : (i % ACCENTS.length),
+        builtin: !!l.builtin,
+        type: (l.type === "notes" && !bi) ? "notes" : "todo",
+        items: normItems(l.items)
+      };
+    });
+  }
 
   // ---------- Persistence ----------
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); } catch (e) {} }
@@ -400,16 +589,7 @@
       var raw = localStorage.getItem(STORE_KEY);
       if (raw) {
         var p = JSON.parse(raw) || {};
-        DATA.lists = (p.lists || []).map(function (l, i) {
-          return {
-            id: l.id || ("l_" + uid()),
-            title: l.title || ("List " + (i + 1)),
-            desc: l.desc || "",
-            accent: typeof l.accent === "number" ? l.accent : (i % ACCENTS.length),
-            builtin: !!l.builtin,
-            items: normItems(l.items)
-          };
-        });
+        DATA.lists = hydrateLists(p.lists);
         ensureBuiltins();
         return;
       }
@@ -441,10 +621,10 @@
   // ---------- CSV ----------
   function csvEscape(v) { v = String(v == null ? "" : v); if (/[",\n\r]/.test(v)) return '"' + v.replace(/"/g, '""') + '"'; return v; }
   function toCSV() {
-    var rows = [["id", "list", "list_description", "description", "done", "created", "completed", "archived"]];
+    var rows = [["id", "list", "list_type", "list_description", "description", "done", "created", "completed", "archived", "daily", "notes"]];
     DATA.lists.forEach(function (l) {
       l.items.forEach(function (t) {
-        rows.push([t.id, l.title, l.desc, t.text, t.done ? "true" : "false", t.created, t.completed || "", t.archived ? "true" : "false"]);
+        rows.push([t.id, l.title, l.type || "todo", l.desc, t.text, t.done ? "true" : "false", t.created, t.completed || "", t.archived ? "true" : "false", t.daily ? "true" : "false", t.notes || ""]);
       });
     });
     return rows.map(function (r) { return r.map(csvEscape).join(","); }).join("\r\n");
@@ -477,80 +657,131 @@
     var idi = header.indexOf("id"), li = header.indexOf("list"),
         ldi = header.indexOf("list_description"), di = header.indexOf("description"),
         dni = header.indexOf("done"), ci = header.indexOf("created"),
-        cmi = header.indexOf("completed"), ai = header.indexOf("archived");
+        cmi = header.indexOf("completed"), ai = header.indexOf("archived"), dyi = header.indexOf("daily"), ni = header.indexOf("notes"),
+        lti = header.indexOf("list_type");
     if (ldi === -1) ldi = header.indexOf("list_desc");
     var start = hasHeader ? 1 : 0;
 
     var next = seedBuiltins();
     var nextAccent = 2;
-    function resolveList(val, descVal) {
+    function resolveList(val, descVal, typeVal) {
       var key = (val || "").trim().toLowerCase();
       if (key === "" || key === "daily" || key === "daily work") return next[0];
       if (key === "must" || key === "must do") return next[1];
       for (var j = 0; j < next.length; j++) if (next[j].title.trim().toLowerCase() === key) return next[j];
-      var nl = { id: "l_" + uid(), title: (val || "Imported list").trim(), desc: (descVal || "").trim() || "Imported list", accent: (nextAccent++) % ACCENTS.length, builtin: false, items: [] };
+      var d = (descVal || "").trim();
+      if (!d && ldi === -1) d = "Imported list"; // placeholder only when the file has no description column
+      var nl = { id: "l_" + uid(), title: (val || "Imported list").trim(), desc: d, accent: (nextAccent++) % ACCENTS.length, builtin: false, type: (typeVal === "notes" ? "notes" : "todo"), items: [] };
       next.push(nl);
       return nl;
     }
 
     var count = 0;
     for (var r = start; r < rows.length; r++) {
-      var cells = rows[r], id, listVal, listDesc, text2, done, created, completed, archived;
+      var cells = rows[r], id, listVal, listType, listDesc, text2, done, created, completed, archived, daily, notes;
       if (hasHeader) {
         id = (idi !== -1 && cells[idi]) ? cells[idi] : uid();
         listVal = li !== -1 ? cells[li] : "daily";
+        listType = lti !== -1 ? (cells[lti] || "").trim().toLowerCase() : "todo";
         listDesc = ldi !== -1 ? cells[ldi] : "";
         text2 = di !== -1 ? cells[di] : (cells[1] || "");
         done = dni !== -1 ? truthy(cells[dni]) : false;
         created = ci !== -1 ? (cells[ci] || "") : "";
         completed = cmi !== -1 ? (cells[cmi] || "") : "";
         archived = ai !== -1 ? truthy(cells[ai]) : false;
+        daily = dyi !== -1 ? truthy(cells[dyi]) : false;
+        notes = ni !== -1 ? (cells[ni] || "") : "";
       } else {
         if (cells.length >= 2) { id = cells[0] || uid(); text2 = cells[1]; done = truthy(cells[2]); created = cells[3] || ""; }
         else { id = uid(); text2 = cells[0]; done = false; created = ""; }
-        listVal = "daily"; listDesc = ""; completed = ""; archived = false;
+        listVal = "daily"; listType = "todo"; listDesc = ""; completed = ""; archived = false; daily = false; notes = "";
       }
       text2 = (text2 || "").trim();
       if (!text2) continue;
-      if (done && !completed) completed = created || new Date().toISOString();
-      if (!done) { completed = ""; archived = false; }
-      var L = resolveList(listVal, listDesc);
+      var L = resolveList(listVal, listDesc, listType);
       if (listDesc && L.desc === "Imported list" && (listDesc || "").trim()) L.desc = listDesc.trim();
-      L.items.push({ id: id, text: text2, done: done, created: created || new Date().toISOString(), completed: completed, archived: archived });
+      if (L.type === "notes") {
+        done = false; daily = false; completed = "";   // notes have no done/recurring; archived stays as-is
+      } else {
+        if (done && !completed) completed = created || new Date().toISOString();
+        if (!done) { completed = ""; archived = false; }
+      }
+      L.items.push({ id: id, text: text2, done: done, created: created || new Date().toISOString(), completed: completed, archived: archived, daily: daily, notes: notes });
       count++;
     }
 
     if (!count) { toast("No todos found in that file."); return; }
     DATA.lists = next;
     selected = {}; currentListId = null;
+    resetDailies();
     save(); renderHome();
     toast("Imported " + count + " todo" + (count === 1 ? "" : "s") + ".");
   }
 
+  // ---------- JSON (primary, lossless) ----------
+  function toJSON() {
+    return JSON.stringify({ app: "Busy Bee", version: 4, savedAt: new Date().toISOString(), lists: DATA.lists }, null, 2);
+  }
+  function importJSON(text) {
+    var data;
+    try { data = JSON.parse(text); } catch (e) { toast("That file isn't valid JSON."); return; }
+    var rawLists = Array.isArray(data) ? data : (data && Array.isArray(data.lists) ? data.lists : null);
+    if (!rawLists) { toast("Couldn't find any lists in that file."); return; }
+    DATA.lists = hydrateLists(rawLists);
+    ensureBuiltins();
+    selected = {}; currentListId = null;
+    resetDailies();
+    save(); renderHome();
+    var items = DATA.lists.reduce(function (a, l) { return a + l.items.length; }, 0);
+    toast("Loaded " + DATA.lists.length + " lists, " + items + " item" + (items === 1 ? "" : "s") + ".");
+  }
+  // Route an opened file by extension/content (.json -> JSON, otherwise CSV).
+  function importFile(name, text) {
+    var t = String(text || "").replace(/^\uFEFF/, "").trim();
+    var isJson = /\.json$/i.test(name || "") || t.charAt(0) === "{" || t.charAt(0) === "[";
+    if (isJson) importJSON(text); else importFromText(text);
+  }
+
   function openFile() {
     if (window.showOpenFilePicker) {
-      window.showOpenFilePicker({ types: [{ description: "CSV", accept: { "text/csv": [".csv"] } }], excludeAcceptAllOption: false, multiple: false })
-        .then(function (h) { return h[0].getFile(); }).then(function (f) { return f.text(); }).then(importFromText)
+      window.showOpenFilePicker({
+        types: [{ description: "Busy Bee backup or CSV", accept: { "application/json": [".json"], "text/csv": [".csv"] } }],
+        excludeAcceptAllOption: false, multiple: false
+      }).then(function (h) { return h[0].getFile(); })
+        .then(function (f) { return f.text().then(function (t) { importFile(f.name, t); }); })
         .catch(function (e) { if (e && e.name === "AbortError") return; $("fileInput").click(); });
     } else { $("fileInput").click(); }
   }
-  function saveFile() {
-    var csv = toCSV(); var name = "organizer-" + new Date().toISOString().slice(0, 10) + ".csv";
+
+  function saveFile() {  // JSON backup
+    var json = toJSON(); var name = "busy-bee-" + new Date().toISOString().slice(0, 10) + ".json";
+    if (window.showSaveFilePicker) {
+      window.showSaveFilePicker({ suggestedName: name, types: [{ description: "JSON", accept: { "application/json": [".json"] } }] })
+        .then(function (h) { return h.createWritable(); })
+        .then(function (w) { return w.write(json).then(function () { return w.close(); }); })
+        .then(function () { toast("Saved " + name); })
+        .catch(function (e) { if (e && e.name === "AbortError") return; downloadBlob(json, name, "application/json"); });
+    } else { downloadBlob(json, name, "application/json"); }
+  }
+
+  function exportCSV() {  // spreadsheet-friendly snapshot
+    var csv = toCSV(); var name = "busy-bee-" + new Date().toISOString().slice(0, 10) + ".csv";
     if (window.showSaveFilePicker) {
       window.showSaveFilePicker({ suggestedName: name, types: [{ description: "CSV", accept: { "text/csv": [".csv"] } }] })
         .then(function (h) { return h.createWritable(); })
         .then(function (w) { return w.write(csv).then(function () { return w.close(); }); })
-        .then(function () { toast("Saved " + name); })
-        .catch(function (e) { if (e && e.name === "AbortError") return; downloadFallback(csv, name); });
-    } else { downloadFallback(csv, name); }
+        .then(function () { toast("Exported " + name); })
+        .catch(function (e) { if (e && e.name === "AbortError") return; downloadBlob(csv, name, "text/csv"); });
+    } else { downloadBlob(csv, name, "text/csv"); }
   }
-  function downloadFallback(csv, name) {
-    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+  function downloadBlob(text, name, mime) {
+    var blob = new Blob([text], { type: mime + ";charset=utf-8;" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a"); a.href = url; a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    toast("Saved " + name);
+    toast((/\.json$/.test(name) ? "Saved " : "Exported ") + name);
   }
 
   // ---------- Icons ----------
@@ -559,12 +790,20 @@
       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>';
     if (list.id === "must")
       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>';
+    if (list.type === "notes")
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>';
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6h10"/><path d="M11 12h10"/><path d="M11 18h10"/><path d="m3 6 1.5 1.5L7 5"/><path d="m3 12 1.5 1.5L7 11"/><path d="m3 18 1.5 1.5L7 17"/></svg>';
   }
-  function tagLabel(list) { if (list.id === "daily") return "Routine"; if (list.id === "must") return "Priority"; return "List"; }
+  function tagLabel(list) { if (list.id === "daily") return "Routine"; if (list.id === "must") return "Priority"; return list.type === "notes" ? "Notes" : "List"; }
 
   // ---------- Render: Home ----------
+  function updateDate() {
+    try {
+      $("todayDate").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    } catch (e) { $("todayDate").textContent = "Today"; }
+  }
   function renderHome() {
+    updateDate();
     var wrap = $("tiles"); wrap.innerHTML = "";
     DATA.lists.forEach(function (l) {
       var ac = ACCENTS[l.accent % ACCENTS.length];
@@ -575,7 +814,8 @@
         '<span class="label"><span class="t"></span><span class="s"></span></span>' +
         '<span class="arrow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>';
       btn.querySelector(".t").textContent = l.title;
-      btn.querySelector(".s").textContent = l.desc;
+      var s = btn.querySelector(".s");
+      if (l.desc) s.textContent = l.desc; else s.style.display = "none";
       btn.addEventListener("click", function () { openList(l.id); });
       wrap.appendChild(btn);
     });
@@ -587,11 +827,22 @@
     renderStats();
   }
   function renderStats() {
-    var total = 0, done = 0;
-    DATA.lists.forEach(function (l) { l.items.forEach(function (t) { total++; if (t.done) done++; }); });
-    $("statTotal").textContent = total;
-    $("statDone").textContent = done;
-    $("statOpen").textContent = total - done;
+    var tTotal = 0, tDone = 0, nTotal = 0, nArch = 0, hasNotes = false;
+    DATA.lists.forEach(function (l) {
+      if (l.type === "notes") {
+        hasNotes = true;
+        l.items.forEach(function (t) { nTotal++; if (t.archived) nArch++; });
+      } else {
+        l.items.forEach(function (t) { tTotal++; if (t.done) tDone++; });
+      }
+    });
+    $("statTotal").textContent = tTotal;
+    $("statDone").textContent = tDone;
+    $("statOpen").textContent = tTotal - tDone;
+    $("notesStats").style.display = hasNotes ? "block" : "none";
+    $("statNotesTotal").textContent = nTotal;
+    $("statNotesActive").textContent = nTotal - nArch;
+    $("statNotesArchived").textContent = nArch;
   }
 
   // ---------- Render: list view ----------
@@ -608,63 +859,128 @@
     return check;
   }
 
+  function noteBtnEl(listId, t, stop) {
+    var nb = document.createElement("button");
+    nb.className = "note-btn" + (notesHasContent(t.notes) ? " has" : "");
+    nb.setAttribute("title", notesHasContent(t.notes) ? "Edit notes" : "Add notes");
+    nb.setAttribute("aria-label", notesHasContent(t.notes) ? "Edit notes" : "Add notes");
+    nb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>';
+    nb.addEventListener("click", function (e) { if (stop) e.stopPropagation(); openNote(listId, t.id); });
+    return nb;
+  }
+  function bodyEl(t) {
+    var body = document.createElement("div"); body.className = "body";
+    var text = document.createElement("span"); text.className = "text"; text.textContent = t.text;
+    body.appendChild(text);
+    if (notesHasContent(t.notes)) {
+      var pv = document.createElement("div"); pv.className = "note-preview";
+      pv.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>';
+      var pvt = document.createElement("span"); pvt.className = "pv-text"; pvt.textContent = notesPreview(t.notes);
+      pv.appendChild(pvt); body.appendChild(pv);
+    }
+    return body;
+  }
+  function dailyBadgeEl() {
+    var d = document.createElement("span"); d.className = "badge-daily";
+    d.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>Daily';
+    return d;
+  }
+
   function renderList(list) {
     if (!list) return;
+    var isNotes = list.type === "notes";
     var active = list.items.filter(function (t) { return !t.archived; });
     var archived = list.items.filter(function (t) { return t.archived; });
 
+    // ----- Active -----
     var ul = $("todoList"); ul.innerHTML = "";
     $("emptyState").style.display = active.length ? "none" : "block";
     active.forEach(function (t) {
       var li = document.createElement("li");
-      li.className = "todo" + (t.done ? " done" : "") + (t.id === selected[list.id] ? " sel" : "");
-      var text = document.createElement("span"); text.className = "text"; text.textContent = t.text;
+      li.className = "todo" + (isNotes ? " noterow" : "") + (!isNotes && t.done ? " done" : "") + (!isNotes && t.id === selected[list.id] ? " sel" : "");
       var meta = document.createElement("span"); meta.className = "meta";
-      if (t.done) {
-        var badge = document.createElement("span"); badge.className = "badge-done"; badge.textContent = "Done";
-        var when = document.createElement("span"); when.className = "when"; when.textContent = fmtWhen(t.completed);
-        meta.appendChild(badge); meta.appendChild(when);
+
+      if (isNotes) {
+        meta.appendChild(noteBtnEl(list.id, t, false));
+        var actions = document.createElement("div"); actions.className = "row-actions";
+        var ab = document.createElement("button"); ab.className = "btn-row archive"; ab.textContent = "Archive";
+        ab.addEventListener("click", function () { archiveItem(list.id, t.id); });
+        var xb = document.createElement("button"); xb.className = "btn-row danger"; xb.textContent = "Delete";
+        xb.addEventListener("click", function () { deleteItem(list.id, t.id); });
+        actions.appendChild(ab); actions.appendChild(xb);
+        li.appendChild(bodyEl(t)); li.appendChild(meta); li.appendChild(actions);
       } else {
-        var w = document.createElement("span"); w.className = "when"; w.textContent = fmtWhen(t.created); meta.appendChild(w);
+        if (t.daily) meta.appendChild(dailyBadgeEl());
+        if (t.done) {
+          var badge = document.createElement("span"); badge.className = "badge-done"; badge.textContent = "Done";
+          var when = document.createElement("span"); when.className = "when"; when.textContent = fmtWhen(t.completed);
+          meta.appendChild(badge); meta.appendChild(when);
+        } else if (!t.daily) {
+          var w = document.createElement("span"); w.className = "when"; w.textContent = fmtWhen(t.created); meta.appendChild(w);
+        }
+        meta.appendChild(noteBtnEl(list.id, t, true));
+        var dt = document.createElement("button");
+        dt.className = "daily-toggle" + (t.daily ? " on" : "");
+        dt.setAttribute("aria-pressed", t.daily ? "true" : "false");
+        dt.setAttribute("title", t.daily ? "Repeats daily — tap to stop" : "Repeat this daily");
+        dt.setAttribute("aria-label", t.daily ? "Stop repeating daily" : "Repeat this daily");
+        dt.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>';
+        dt.addEventListener("click", function (e) { e.stopPropagation(); toggleDaily(list.id, t.id); });
+        meta.appendChild(dt);
+        li.appendChild(makeCheck(t.done, function () { toggleDone(list.id, t.id); }));
+        li.appendChild(bodyEl(t)); li.appendChild(meta);
+        li.addEventListener("click", function () { selectTodo(list.id, t.id); });
       }
-      li.appendChild(makeCheck(t.done, function () { toggleDone(list.id, t.id); }));
-      li.appendChild(text); li.appendChild(meta);
-      li.addEventListener("click", function () { selectTodo(list.id, t.id); });
       ul.appendChild(li);
     });
 
+    // ----- Archive (both types: Relist + Delete) -----
     var arc = $("archiveList"); arc.innerHTML = "";
     $("archiveEmpty").style.display = archived.length ? "none" : "block";
     archived.forEach(function (t) {
       var li = document.createElement("li"); li.className = "todo archived";
-      var text = document.createElement("span"); text.className = "text"; text.textContent = t.text;
       var meta = document.createElement("span"); meta.className = "meta";
+      if (!isNotes && t.daily) meta.appendChild(dailyBadgeEl());
       var when = document.createElement("span"); when.className = "when";
-      when.textContent = t.completed ? "Completed " + fmtWhen(t.completed) : "Archived";
+      when.textContent = isNotes ? (fmtWhen(t.created) ? "Added " + fmtWhen(t.created) : "Archived")
+                                 : (t.completed ? "Completed " + fmtWhen(t.completed) : "Archived");
       meta.appendChild(when);
+      meta.appendChild(noteBtnEl(list.id, t, false));
       var actions = document.createElement("div"); actions.className = "row-actions";
       var rb = document.createElement("button"); rb.className = "btn-row relist"; rb.textContent = "Relist";
       rb.addEventListener("click", function () { relist(list.id, t.id); });
       var db = document.createElement("button"); db.className = "btn-row danger"; db.textContent = "Delete";
-      db.addEventListener("click", function () { deleteArchived(list.id, t.id); });
+      db.addEventListener("click", function () { deleteItem(list.id, t.id); });
       actions.appendChild(rb); actions.appendChild(db);
-      li.appendChild(makeCheck(true, null)); li.appendChild(text); li.appendChild(meta); li.appendChild(actions);
+      li.appendChild(makeCheck(true, null)); li.appendChild(bodyEl(t)); li.appendChild(meta); li.appendChild(actions);
       arc.appendChild(li);
     });
 
+    // ----- Counts & controls -----
     $("listCount").textContent = active.length;
     $("archiveCount").textContent = archived.length;
 
-    var doneActive = active.filter(function (t) { return t.done; }).length;
     var aBtn = $("archiveBtn");
-    aBtn.disabled = doneActive === 0;
-    aBtn.querySelector(".archive-label").textContent = doneActive ? "Archive done (" + doneActive + ")" : "Archive done";
+    if (isNotes) {
+      aBtn.style.display = "none";
+    } else {
+      aBtn.style.display = "";
+      var archivable = active.filter(function (t) { return t.done && !t.daily; }).length;
+      aBtn.disabled = archivable === 0;
+      aBtn.querySelector(".archive-label").textContent = archivable ? "Archive done (" + archivable + ")" : "Archive done";
+    }
 
     var dBtn = $("deleteBtn");
-    dBtn.disabled = !selected[list.id];
-    $("deleteHint").textContent = selected[list.id]
-      ? "1 todo selected — press Delete to remove it."
-      : "Tip: tap a todo in the list to select it, then Delete to remove it.";
+    if (isNotes) {
+      dBtn.style.display = "none";
+      $("deleteHint").textContent = "Each note has its own Archive and Delete buttons.";
+    } else {
+      dBtn.style.display = "";
+      dBtn.disabled = !selected[list.id];
+      $("deleteHint").textContent = selected[list.id]
+        ? "1 todo selected — press Delete to remove it."
+        : "Tip: tap a todo in the list to select it, then Delete to remove it.";
+    }
   }
 
   // ---------- Item actions ----------
@@ -674,9 +990,15 @@
     var list = getList(listId); if (!list) return;
     var input = $("todoInput"); var text = input.value.trim();
     if (!text) { input.focus(); return; }
-    list.items.push({ id: uid(), text: text, done: false, created: new Date().toISOString(), completed: "", archived: false });
+    list.items.push({ id: uid(), text: text, done: false, created: new Date().toISOString(), completed: "", archived: false, daily: false, notes: "" });
     input.value = ""; input.focus();
     save(); renderList(list); renderStats();
+  }
+  function toggleDaily(listId, id) {
+    var list = getList(listId); if (!list) return;
+    var t = findItem(list, id); if (!t) return;
+    t.daily = !t.daily;
+    save(); renderList(list);
   }
   function deleteSelected(listId) {
     var list = getList(listId); if (!list || !selected[listId]) return;
@@ -697,7 +1019,7 @@
   function archiveCompleted(listId) {
     var list = getList(listId); if (!list) return;
     var moved = 0;
-    list.items.forEach(function (t) { if (t.done && !t.archived) { t.archived = true; moved++; } });
+    list.items.forEach(function (t) { if (t.done && !t.archived && !t.daily) { t.archived = true; moved++; } });
     if (!moved) return;
     if (selected[listId]) { var s = findItem(list, selected[listId]); if (s && s.archived) selected[listId] = null; }
     save(); renderList(list); renderStats(); toast("Archived " + moved + " item" + (moved === 1 ? "" : "s") + ".");
@@ -708,15 +1030,23 @@
     t.archived = false; t.done = false; t.completed = "";
     save(); renderList(list); renderStats(); toast("Moved back to the list.");
   }
-  function deleteArchived(listId, id) {
+  function archiveItem(listId, id) {
+    var list = getList(listId); if (!list) return;
+    var t = findItem(list, id); if (!t) return;
+    t.archived = true;
+    if (selected[listId] === id) selected[listId] = null;
+    save(); renderList(list); renderStats(); toast("Archived.");
+  }
+  function deleteItem(listId, id) {
     var list = getList(listId); if (!list) return;
     list.items = list.items.filter(function (t) { return t.id !== id; });
-    save(); renderList(list); renderStats(); toast("Deleted from archive.");
+    if (selected[listId] === id) selected[listId] = null;
+    save(); renderList(list); renderStats(); toast("Deleted.");
   }
 
   // ---------- List add / delete ----------
-  function createList(title, desc) {
-    var l = { id: "l_" + uid(), title: title.trim(), desc: desc.trim(), accent: DATA.lists.length % ACCENTS.length, builtin: false, items: [] };
+  function createList(title, desc, type) {
+    var l = { id: "l_" + uid(), title: title.trim(), desc: desc.trim(), accent: DATA.lists.length % ACCENTS.length, builtin: false, type: (type === "notes" ? "notes" : "todo"), items: [] };
     DATA.lists.push(l); save(); renderHome();
     return l;
   }
@@ -730,8 +1060,16 @@
   // ---------- Modals ----------
   function openModal(id) { $(id).classList.add("open"); }
   function closeModal(id) { $(id).classList.remove("open"); }
+  var newListType = "todo";
+  function setNewType(type) {
+    newListType = (type === "notes") ? "notes" : "todo";
+    document.querySelectorAll("#typeSeg [data-type]").forEach(function (b) {
+      b.classList.toggle("sel", b.getAttribute("data-type") === newListType);
+    });
+  }
   function openAddModal() {
     $("newTitle").value = ""; $("newDesc").value = ""; $("addError").textContent = "";
+    setNewType("todo");
     openModal("addModal"); setTimeout(function () { $("newTitle").focus(); }, 50);
   }
   function submitAddList() {
@@ -739,11 +1077,10 @@
     var desc = $("newDesc").value.trim();
     var err = $("addError");
     if (!title) { err.textContent = "Please enter a title."; $("newTitle").focus(); return; }
-    if (!desc) { err.textContent = "Please enter a short description."; $("newDesc").focus(); return; }
     if (titleExists(title)) { err.textContent = "A list with that title already exists."; $("newTitle").focus(); return; }
-    var l = createList(title, desc);
+    var l = createList(title, desc, newListType);
     closeModal("addModal");
-    toast("List “" + l.title + "” created.");
+    toast((l.type === "notes" ? "Notes list" : "List") + " “" + l.title + "” created.");
   }
 
   var pendingDeleteId = null;
@@ -769,12 +1106,15 @@
   }
 
   // ---------- View switching ----------
+  var currentView = "home";
   function show(view) {
-    var home = view === "home";
-    $("homeView").classList.toggle("active", home);
-    $("listView").classList.toggle("active", !home);
-    $("homeActions").style.display = home ? "flex" : "none";
-    $("listActions").style.display = home ? "none" : "flex";
+    currentView = view;
+    $("homeView").classList.toggle("active", view === "home");
+    $("listView").classList.toggle("active", view === "list");
+    $("noteView").classList.toggle("active", view === "note");
+    $("homeActions").style.display = view === "home" ? "flex" : "none";
+    $("listActions").style.display = view === "list" ? "flex" : "none";
+    $("noteActions").style.display = view === "note" ? "flex" : "none";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   function openList(id) {
@@ -783,21 +1123,84 @@
     var ac = ACCENTS[l.accent % ACCENTS.length];
     $("listTitle").textContent = l.title;
     var tag = $("listTag"); tag.textContent = tagLabel(l); tag.style.color = ac.fg; tag.style.background = ac.soft;
-    $("listSub").textContent = l.desc;
+    $("listSub").textContent = l.desc || "";
+    $("listSub").style.display = l.desc ? "block" : "none";
     $("dangerZone").style.display = l.builtin ? "none" : "block";
+    var isNotes = l.type === "notes";
     $("todoInput").value = "";
+    $("todoInput").placeholder = isNotes ? "Write a note…" : "Write a short description…";
+    $("addPanelTitle").textContent = isNotes ? "Add a note" : "Add a todo";
     renderList(l);
     show("list");
     setTimeout(function () { $("todoInput").focus(); }, 60);
   }
 
+  // ---------- Note editor ----------
+  var noteCtx = { listId: null, itemId: null };
+  var noteSaveTimer = null;
+  function scheduleNoteSave() {
+    var l = getList(noteCtx.listId); if (!l) return;
+    var t = findItem(l, noteCtx.itemId); if (!t) return;
+    t.notes = $("noteEditor").innerHTML;
+    clearTimeout(noteSaveTimer);
+    noteSaveTimer = setTimeout(save, 300);
+  }
+  function openNote(listId, itemId) {
+    var l = getList(listId); if (!l) return;
+    var t = findItem(l, itemId); if (!t) return;
+    noteCtx = { listId: listId, itemId: itemId };
+    $("noteItemText").textContent = t.text;
+    $("noteEditor").innerHTML = sanitizeNotes(t.notes || "");
+    show("note");
+    setTimeout(function () {
+      var ed = $("noteEditor"); ed.focus();
+      // place caret at the end
+      try {
+        var range = document.createRange(); range.selectNodeContents(ed); range.collapse(false);
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      } catch (e) {}
+    }, 60);
+  }
+  function leaveNote() {
+    clearTimeout(noteSaveTimer); save();
+    var id = noteCtx.listId;
+    noteCtx = { listId: null, itemId: null };
+    if (id && getList(id)) openList(id); else { show("home"); renderHome(); }
+  }
+
+  function initNoteEditor() {
+    var ed = $("noteEditor");
+    ed.addEventListener("input", scheduleNoteSave);
+    // Tab inserts a tab character instead of moving focus
+    ed.addEventListener("keydown", function (e) {
+      if (e.key === "Tab") { e.preventDefault(); document.execCommand("insertText", false, "\t"); }
+    });
+    // Paste as plain text (keeps notes clean and safe)
+    ed.addEventListener("paste", function (e) {
+      e.preventDefault();
+      var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
+      document.execCommand("insertText", false, txt);
+    });
+    // Toolbar
+    document.querySelectorAll("#editorToolbar [data-cmd]").forEach(function (btn) {
+      btn.addEventListener("mousedown", function (e) { e.preventDefault(); }); // keep selection/focus
+      btn.addEventListener("click", function () {
+        ed.focus();
+        document.execCommand(btn.getAttribute("data-cmd"), false, null);
+        scheduleNoteSave();
+      });
+    });
+  }
+
   // ---------- Wire up ----------
   $("homeBtn").addEventListener("click", function () { show("home"); renderHome(); });
+  $("noteBackBtn").addEventListener("click", leaveNote);
   $("openBtn").addEventListener("click", openFile);
   $("saveBtn").addEventListener("click", saveFile);
+  $("csvBtn").addEventListener("click", exportCSV);
   $("fileInput").addEventListener("change", function (e) {
     var file = e.target.files && e.target.files[0]; if (!file) return;
-    var reader = new FileReader(); reader.onload = function () { importFromText(String(reader.result)); };
+    var reader = new FileReader(); reader.onload = function () { importFile(file.name, String(reader.result)); };
     reader.readAsText(file); e.target.value = "";
   });
 
@@ -808,6 +1211,9 @@
   $("todoInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); addTodo(currentListId); } });
 
   $("createListBtn").addEventListener("click", submitAddList);
+  document.querySelectorAll("#typeSeg [data-type]").forEach(function (b) {
+    b.addEventListener("click", function () { setNewType(b.getAttribute("data-type")); });
+  });
   $("newDesc").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); submitAddList(); } });
   $("newTitle").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("newDesc").focus(); } });
 
@@ -829,7 +1235,24 @@
     if (e.key === "Escape") document.querySelectorAll(".modal-overlay.open").forEach(function (ov) { closeModal(ov.id); });
   });
 
+  // ---------- Day rollover (reset dailies when the local date changes) ----------
+  var liveDayKey = todayKey();
+  function checkRollover() {
+    var tk = todayKey();
+    if (tk === liveDayKey) return;
+    liveDayKey = tk;
+    resetDailies();
+    if (currentView === "home") renderHome();
+    else { renderList(getList(currentListId)); updateDate(); }
+    renderStats();
+  }
+  setInterval(checkRollover, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) checkRollover(); });
+  window.addEventListener("focus", checkRollover);
+
   load();
+  initNoteEditor();
+  resetDailies();
   renderHome();
 })();
 </script>

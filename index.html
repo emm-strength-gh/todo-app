@@ -26,6 +26,26 @@
     --border-strong: #d2d6cd;
     --shadow: 0 1px 2px rgba(27,36,32,.05), 0 8px 24px rgba(27,36,32,.06);
     --radius: 14px;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    --bg: #14171a;
+    --surface: #1d2125;
+    --ink: #e8eae6;
+    --muted: #9aa39d;
+    --faint: #6c756e;
+    --pine: #6bbfa3;
+    --pine-dark: #5aab90;
+    --gold: #e0b24c;
+    --gold-soft: #38311d;
+    --clay: #e08a73;
+    --clay-soft: #3a261f;
+    --daily: #6fb6d6;
+    --daily-soft: #1f2e36;
+    --border: #2c3137;
+    --border-strong: #3a4047;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -56,6 +76,18 @@
     box-shadow: 0 4px 0 rgba(255,255,255,.55), 0 8px 0 rgba(255,255,255,.3);
   }
   .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .bar-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .icon-chip { padding: 9px; width: 38px; height: 38px; justify-content: center; }
+  .icon-chip svg { width: 17px; height: 17px; }
+  .tile .lock { color: var(--faint); flex: none; display: grid; place-items: center; }
+  .tile .lock svg { width: 17px; height: 17px; }
+  .head-lock { color: var(--faint); display: inline-flex; vertical-align: middle; }
+  .head-lock svg { width: 18px; height: 18px; }
+  .pw-warn { font-size: 12.5px; color: var(--muted); background: var(--gold-soft); border: 1px solid var(--border); border-radius: 9px; padding: 9px 11px; margin: 0 0 14px; line-height: 1.4; }
+  .pw-check { display: flex; align-items: center; gap: 9px; margin: 2px 0 14px; cursor: pointer; font-size: 14px; color: var(--ink); }
+  .pw-check input { width: 17px; height: 17px; accent-color: var(--pine); }
+  .pw-fields { display: none; }
+  .pw-fields.show { display: block; }
 
   button {
     font-family: inherit; cursor: pointer; border: none; border-radius: 999px;
@@ -110,6 +142,28 @@
   .stat-group { margin-top: 22px; }
   .stat-cap { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
   .stat-row { display: flex; gap: 14px; }
+
+  /* ---------- Search ---------- */
+  .search { position: relative; margin: 0 0 26px; }
+  .search input { width: 100%; font-family: inherit; font-size: 15px; color: var(--ink); padding: 13px 42px 13px 42px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); }
+  .search input::placeholder { color: var(--faint); }
+  .search input:focus { outline: none; border-color: var(--pine); box-shadow: 0 0 0 3px rgba(46,90,78,.12); }
+  .search input::-webkit-search-cancel-button { display: none; }
+  .search-ic { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--faint); pointer-events: none; }
+  .search-clear { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border: none; background: transparent; color: var(--faint); border-radius: 8px; display: none; align-items: center; justify-content: center; cursor: pointer; }
+  .search-clear svg { width: 16px; height: 16px; }
+  .search-clear:hover { background: var(--bg); color: var(--ink); }
+  .results-head { font-size: 13px; color: var(--muted); margin: 0 0 14px; }
+  .result { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 10px; cursor: pointer; }
+  .result:hover { box-shadow: 0 1px 2px rgba(27,36,32,.05), 0 12px 28px rgba(27,36,32,.10); }
+  .result .r-ic { flex: none; width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; }
+  .result .r-ic svg { width: 19px; height: 19px; }
+  .result .r-main { flex: 1; min-width: 0; }
+  .result .r-title { font-size: 15px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .result.done-hit .r-title { color: var(--faint); text-decoration: line-through; text-decoration-color: var(--gold); }
+  .result .r-ctx { font-size: 12.5px; color: var(--muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .result .r-tag { flex: none; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--bg); border: 1px solid var(--border); padding: 3px 8px; border-radius: 999px; }
+  .results-empty { text-align: center; color: var(--faint); padding: 30px 10px; font-size: 14px; }
   .stat { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
   .stat .n { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 28px; }
   .stat .k { font-size: 13px; color: var(--muted); margin-top: 2px; }
@@ -261,12 +315,37 @@
     .type-seg { flex-direction: column; }
   }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  /* ---------- Dark theme fixes for hardcoded light tints ---------- */
+  html[data-theme="dark"] header.bar { background: rgba(20,23,26,.82); }
+  html[data-theme="dark"] .chip:hover,
+  html[data-theme="dark"] .btn-ghost:hover:not(:disabled),
+  html[data-theme="dark"] .note-btn:hover,
+  html[data-theme="dark"] .daily-toggle:hover,
+  html[data-theme="dark"] .btn-row:hover { background: #262b30; }
+  html[data-theme="dark"] .composer input[type="text"],
+  html[data-theme="dark"] .modal input,
+  html[data-theme="dark"] .type-opt,
+  html[data-theme="dark"] .check,
+  html[data-theme="dark"] .editor-toolbar { background: #181c20; }
+  html[data-theme="dark"] .tile.add:hover,
+  html[data-theme="dark"] li.todo.sel,
+  html[data-theme="dark"] .type-opt.sel,
+  html[data-theme="dark"] .btn-row.relist:hover { background: #1d2f29; }
+  html[data-theme="dark"] .tb-btn:hover { background: #262b30; }
+  html[data-theme="dark"] .btn-mini { border-color: #4a4222; }
+  html[data-theme="dark"] .btn-mini:hover:not(:disabled) { background: #3a3318; }
+  html[data-theme="dark"] .daily-toggle.on { border-color: #2f4854; }
+  html[data-theme="dark"] .btn-row.archive { border-color: #4a4222; }
+  html[data-theme="dark"] .toast { background: #2b3036; color: #e8eae6; }
 </style>
 </head>
 <body>
 
 <header class="bar">
   <div class="brand"><span class="mark"></span> Busy Bee 🐝</div>
+  <div class="bar-right">
+    <button class="chip icon-chip" id="themeBtn" title="Toggle dark mode" aria-label="Toggle dark mode"></button>
   <div class="actions" id="homeActions">
     <button class="chip" id="openBtn" title="Open a saved file (.json or .csv)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg>
@@ -293,6 +372,7 @@
       Back
     </button>
   </div>
+  </div>
 </header>
 
 <input type="file" id="fileInput" accept=".json,.csv,application/json,text/csv" style="display:none" />
@@ -303,28 +383,41 @@
     <p class="eyebrow" id="todayDate">Your day, in order</p>
     <h1>A quiet place to keep<br />the work that matters.</h1>
     <p class="lede">Make a list for anything, check things off as you go, and keep a full backup you can carry between devices.</p>
-    <div class="tiles" id="tiles"></div>
-    <div class="stat-group">
-      <p class="stat-cap">Todos</p>
-      <div class="stat-row">
-        <div class="stat"><div class="n" id="statTotal">0</div><div class="k">Total todos</div></div>
-        <div class="stat"><div class="n" id="statDone">0</div><div class="k">Completed</div></div>
-        <div class="stat"><div class="n" id="statOpen">0</div><div class="k">Still open</div></div>
+
+    <div class="search">
+      <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchInput" type="search" placeholder="Search lists and items…" autocomplete="off" />
+      <button class="search-clear" id="searchClear" aria-label="Clear search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="homeBrowse">
+      <div class="tiles" id="tiles"></div>
+      <div class="stat-group">
+        <p class="stat-cap">Todos</p>
+        <div class="stat-row">
+          <div class="stat"><div class="n" id="statTotal">0</div><div class="k">Total todos</div></div>
+          <div class="stat"><div class="n" id="statDone">0</div><div class="k">Completed</div></div>
+          <div class="stat"><div class="n" id="statOpen">0</div><div class="k">Still open</div></div>
+        </div>
+      </div>
+      <div class="stat-group" id="notesStats" style="display:none">
+        <p class="stat-cap">Notes</p>
+        <div class="stat-row">
+          <div class="stat"><div class="n" id="statNotesTotal">0</div><div class="k">Total notes</div></div>
+          <div class="stat"><div class="n" id="statNotesActive">0</div><div class="k">Active</div></div>
+          <div class="stat"><div class="n" id="statNotesArchived">0</div><div class="k">Archived</div></div>
+        </div>
       </div>
     </div>
-    <div class="stat-group" id="notesStats" style="display:none">
-      <p class="stat-cap">Notes</p>
-      <div class="stat-row">
-        <div class="stat"><div class="n" id="statNotesTotal">0</div><div class="k">Total notes</div></div>
-        <div class="stat"><div class="n" id="statNotesActive">0</div><div class="k">Active</div></div>
-        <div class="stat"><div class="n" id="statNotesArchived">0</div><div class="k">Archived</div></div>
-      </div>
-    </div>
+
+    <div id="searchResults" class="results" style="display:none"></div>
   </section>
 
   <!-- LIST (reused for every list) -->
   <section class="view" id="listView">
-    <h2 class="section-head"><span id="listTitle"></span> <span class="tag" id="listTag"></span></h2>
+    <h2 class="section-head"><span id="listTitle"></span> <span class="tag" id="listTag"></span> <span class="head-lock" id="headLock" style="display:none" title="Password protected"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></h2>
     <p class="section-sub" id="listSub"></p>
 
     <div class="panel">
@@ -361,8 +454,16 @@
       </div>
     </div>
 
-    <div class="danger-zone" id="dangerZone" style="display:none">
-      <button class="btn-danger-ghost" id="deleteListBtn">
+    <div class="danger-zone" id="listTools">
+      <button class="btn-danger-ghost" id="lockBtn" style="display:none;color:var(--pine);border-color:#bcd2c9">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Protect with password
+      </button>
+      <button class="btn-danger-ghost" id="removePwBtn" style="display:none;color:var(--pine);border-color:#bcd2c9">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+        Remove password
+      </button>
+      <button class="btn-danger-ghost" id="deleteListBtn" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6"/></svg>
         Delete this list
       </button>
@@ -419,6 +520,12 @@
     <input id="newTitle" type="text" maxlength="40" placeholder="e.g. Coaching" autocomplete="off" />
     <label for="newDesc">Description <span style="color:var(--faint);font-weight:400">(optional)</span></label>
     <input id="newDesc" type="text" maxlength="80" placeholder="e.g. Programming and athlete check-ins" autocomplete="off" />
+    <label class="pw-check" id="protectCheckWrap"><input type="checkbox" id="protectCheck" /> 🔒 Password-protect this list</label>
+    <div class="pw-fields" id="protectFields">
+      <input id="newPw" type="password" maxlength="128" placeholder="Password" autocomplete="new-password" />
+      <input id="newPw2" type="password" maxlength="128" placeholder="Confirm password" autocomplete="new-password" style="margin-top:10px" />
+      <p class="pw-warn">This list's contents are encrypted with your password. It is never stored anywhere — if you forget it, the contents cannot be recovered.</p>
+    </div>
     <p class="modal-error" id="addError"></p>
     <div class="modal-actions">
       <button class="btn-ghost" data-close>Cancel</button>
@@ -438,6 +545,39 @@
     <div class="modal-actions">
       <button class="btn-ghost" data-close>Cancel</button>
       <button class="btn-solid danger" id="confirmDeleteBtn" disabled>Delete list</button>
+    </div>
+  </div>
+</div>
+
+<!-- Unlock modal -->
+<div class="modal-overlay" id="unlockModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+    <h3 id="unlockTitle">Locked list</h3>
+    <p class="modal-sub">Enter the password for “<b id="unlockName"></b>” to view it.</p>
+    <label for="unlockPw">Password</label>
+    <input id="unlockPw" type="password" maxlength="128" placeholder="Password" autocomplete="off" />
+    <p class="modal-error" id="unlockError"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" data-close>Cancel</button>
+      <button class="btn-solid" id="unlockBtn">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- Set password modal (existing list) -->
+<div class="modal-overlay" id="pwModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <h3 id="pwTitle">Protect list</h3>
+    <p class="modal-sub">Encrypt the contents of “<b id="pwName"></b>” with a password.</p>
+    <label for="pwInput">Password</label>
+    <input id="pwInput" type="password" maxlength="128" placeholder="Password" autocomplete="new-password" />
+    <label for="pwInput2" style="margin-top:14px;display:block">Confirm password</label>
+    <input id="pwInput2" type="password" maxlength="128" placeholder="Confirm password" autocomplete="new-password" />
+    <p class="pw-warn" style="margin-top:14px">The password is never stored. If you forget it, this list's contents cannot be recovered.</p>
+    <p class="modal-error" id="pwError"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" data-close>Cancel</button>
+      <button class="btn-solid" id="pwSetBtn">Protect</button>
     </div>
   </div>
 </div>
@@ -467,6 +607,37 @@
   var LEGACY_V3 = "organizer.lists.v3";
   var LEGACY_V2 = "organizer.lists.v2";
   var LEGACY_V1 = "organizer.todos.v1";
+  var THEME_KEY = "busybee.theme";
+
+  // Password protection runtime (never persisted)
+  var sessionKey = {};   // listId -> CryptoKey (derived from password this session)
+  var unlocked = {};     // listId -> true once decrypted this session
+  var hasCrypto = !!(window.crypto && window.crypto.subtle);
+
+  // ---------- Crypto (PBKDF2 + AES-GCM via Web Crypto) ----------
+  function b64enc(buf) { var b = new Uint8Array(buf), s = ""; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function b64dec(str) { var bin = atob(str), a = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
+  function randB64(n) { return b64enc(crypto.getRandomValues(new Uint8Array(n)).buffer); }
+  function deriveKey(password, saltB64) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]).then(function (base) {
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: b64dec(saltB64), iterations: 150000, hash: "SHA-256" },
+        base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+    });
+  }
+  function encryptItems(key, items) {
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var data = new TextEncoder().encode(JSON.stringify(items));
+    return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, data).then(function (ct) {
+      return { iv: b64enc(iv.buffer), ct: b64enc(ct) };
+    });
+  }
+  function decryptItems(key, ivB64, ctB64) {
+    return crypto.subtle.decrypt({ name: "AES-GCM", iv: b64dec(ivB64) }, key, b64dec(ctB64)).then(function (pt) {
+      return JSON.parse(new TextDecoder().decode(pt));
+    });
+  }
 
   // ---------- Helpers ----------
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -577,13 +748,55 @@
         accent: typeof l.accent === "number" ? l.accent : (i % ACCENTS.length),
         builtin: !!l.builtin,
         type: (l.type === "notes" && !bi) ? "notes" : "todo",
+        locked: !!l.locked,
+        salt: l.salt || "", iv: l.iv || "", ct: l.ct || "",
         items: normItems(l.items)
       };
     });
   }
 
   // ---------- Persistence ----------
-  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); } catch (e) {} }
+  // Build a serializable snapshot; locked lists are stored encrypted (never plaintext).
+  function buildSnapshot() {
+    var chain = Promise.resolve();
+    var out = [];
+    DATA.lists.forEach(function (l) {
+      chain = chain.then(function () {
+        var base = { id: l.id, title: l.title, desc: l.desc, accent: l.accent, builtin: l.builtin, type: l.type };
+        if (l.locked) {
+          base.locked = true; base.salt = l.salt; base.items = [];
+          if (unlocked[l.id] && sessionKey[l.id]) {
+            return encryptItems(sessionKey[l.id], l.items).then(function (e) {
+              base.iv = e.iv; base.ct = e.ct;
+              l.iv = e.iv; l.ct = e.ct;   // keep in-memory ciphertext current (needed for re-lock)
+              out.push(base);
+            });
+          }
+          base.iv = l.iv; base.ct = l.ct; out.push(base); return;
+        }
+        base.items = l.items; out.push(base);
+      });
+    });
+    return chain.then(function () { return { app: "Busy Bee", version: 5, savedAt: new Date().toISOString(), lists: out }; });
+  }
+  function save() {
+    buildSnapshot().then(function (snap) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(snap)); } catch (e) {}
+    });
+  }
+  // Re-lock any unlocked protected lists: persist their latest encrypted form,
+  // then wipe the decrypted contents and key from memory so opening asks again.
+  function relockAll(done) {
+    var any = DATA.lists.some(function (l) { return l.locked && unlocked[l.id]; });
+    if (!any) { if (done) done(); return; }
+    buildSnapshot().then(function (snap) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(snap)); } catch (e) {}
+      DATA.lists.forEach(function (l) {
+        if (l.locked && unlocked[l.id]) { l.items = []; delete unlocked[l.id]; delete sessionKey[l.id]; }
+      });
+      if (done) done();
+    });
+  }
   function load() {
     try {
       var raw = localStorage.getItem(STORE_KEY);
@@ -623,6 +836,7 @@
   function toCSV() {
     var rows = [["id", "list", "list_type", "list_description", "description", "done", "created", "completed", "archived", "daily", "notes"]];
     DATA.lists.forEach(function (l) {
+      if (l.locked) return; // never write protected content to a plaintext CSV
       l.items.forEach(function (t) {
         rows.push([t.id, l.title, l.type || "todo", l.desc, t.text, t.done ? "true" : "false", t.created, t.completed || "", t.archived ? "true" : "false", t.daily ? "true" : "false", t.notes || ""]);
       });
@@ -712,7 +926,7 @@
 
     if (!count) { toast("No todos found in that file."); return; }
     DATA.lists = next;
-    selected = {}; currentListId = null;
+    selected = {}; currentListId = null; unlocked = {}; sessionKey = {};
     resetDailies();
     save(); renderHome();
     toast("Imported " + count + " todo" + (count === 1 ? "" : "s") + ".");
@@ -720,7 +934,7 @@
 
   // ---------- JSON (primary, lossless) ----------
   function toJSON() {
-    return JSON.stringify({ app: "Busy Bee", version: 4, savedAt: new Date().toISOString(), lists: DATA.lists }, null, 2);
+    return buildSnapshot().then(function (snap) { return JSON.stringify(snap, null, 2); });
   }
   function importJSON(text) {
     var data;
@@ -729,7 +943,7 @@
     if (!rawLists) { toast("Couldn't find any lists in that file."); return; }
     DATA.lists = hydrateLists(rawLists);
     ensureBuiltins();
-    selected = {}; currentListId = null;
+    selected = {}; currentListId = null; unlocked = {}; sessionKey = {};
     resetDailies();
     save(); renderHome();
     var items = DATA.lists.reduce(function (a, l) { return a + l.items.length; }, 0);
@@ -754,14 +968,16 @@
   }
 
   function saveFile() {  // JSON backup
-    var json = toJSON(); var name = "busy-bee-" + new Date().toISOString().slice(0, 10) + ".json";
-    if (window.showSaveFilePicker) {
-      window.showSaveFilePicker({ suggestedName: name, types: [{ description: "JSON", accept: { "application/json": [".json"] } }] })
-        .then(function (h) { return h.createWritable(); })
-        .then(function (w) { return w.write(json).then(function () { return w.close(); }); })
-        .then(function () { toast("Saved " + name); })
-        .catch(function (e) { if (e && e.name === "AbortError") return; downloadBlob(json, name, "application/json"); });
-    } else { downloadBlob(json, name, "application/json"); }
+    var name = "busy-bee-" + new Date().toISOString().slice(0, 10) + ".json";
+    toJSON().then(function (json) {
+      if (window.showSaveFilePicker) {
+        window.showSaveFilePicker({ suggestedName: name, types: [{ description: "JSON", accept: { "application/json": [".json"] } }] })
+          .then(function (h) { return h.createWritable(); })
+          .then(function (w) { return w.write(json).then(function () { return w.close(); }); })
+          .then(function () { toast("Saved " + name); })
+          .catch(function (e) { if (e && e.name === "AbortError") return; downloadBlob(json, name, "application/json"); });
+      } else { downloadBlob(json, name, "application/json"); }
+    });
   }
 
   function exportCSV() {  // spreadsheet-friendly snapshot
@@ -809,14 +1025,23 @@
       var ac = ACCENTS[l.accent % ACCENTS.length];
       var btn = document.createElement("button");
       btn.className = "tile";
+      var lockIcon = l.locked
+        ? '<span class="lock" title="Password protected"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>'
+        : '';
       btn.innerHTML =
         '<span class="glyph" style="background:' + ac.soft + ';color:' + ac.fg + '">' + iconFor(l) + '</span>' +
         '<span class="label"><span class="t"></span><span class="s"></span></span>' +
+        lockIcon +
         '<span class="arrow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>';
       btn.querySelector(".t").textContent = l.title;
       var s = btn.querySelector(".s");
       if (l.desc) s.textContent = l.desc; else s.style.display = "none";
-      btn.addEventListener("click", function () { openList(l.id); });
+      btn.addEventListener("click", (function (list) {
+        return function () {
+          if (list.locked && !unlocked[list.id]) openUnlockModal(list.id);
+          else openList(list.id);
+        };
+      })(l));
       wrap.appendChild(btn);
     });
     var add = document.createElement("button");
@@ -825,6 +1050,83 @@
     add.addEventListener("click", openAddModal);
     wrap.appendChild(add);
     renderStats();
+    runSearch(); // keep results in sync if a query is active
+  }
+
+  // ---------- Search (skips password-protected lists) ----------
+  function highlightHit(node) { /* placeholder for future */ }
+  function runSearch() {
+    var input = $("searchInput");
+    if (!input) return;
+    var q = input.value.trim().toLowerCase();
+    var browse = $("homeBrowse"), results = $("searchResults"), clear = $("searchClear");
+    clear.style.display = q ? "flex" : "none";
+    if (!q) { browse.style.display = "block"; results.style.display = "none"; results.innerHTML = ""; return; }
+    browse.style.display = "none"; results.style.display = "block";
+
+    var hits = [];
+    DATA.lists.forEach(function (l) {
+      if (l.locked) return; // ignore password-protected lists entirely
+      if (l.title.toLowerCase().indexOf(q) !== -1 || (l.desc || "").toLowerCase().indexOf(q) !== -1) {
+        hits.push({ kind: "list", list: l });
+      }
+      l.items.forEach(function (it) {
+        var inText = (it.text || "").toLowerCase().indexOf(q) !== -1;
+        var inNotes = !inText && notesPreview(it.notes || "").toLowerCase().indexOf(q) !== -1;
+        if (inText || inNotes) hits.push({ kind: "item", list: l, item: it, viaNotes: inNotes });
+      });
+    });
+    renderResults(hits);
+  }
+
+  function renderResults(hits) {
+    var box = $("searchResults");
+    box.innerHTML = "";
+    var head = document.createElement("p"); head.className = "results-head";
+    head.textContent = hits.length ? (hits.length + " result" + (hits.length === 1 ? "" : "s")) : "";
+    box.appendChild(head);
+
+    if (!hits.length) {
+      var empty = document.createElement("div"); empty.className = "results-empty";
+      empty.textContent = "No matches. (Password-protected lists aren't searched.)";
+      box.appendChild(empty);
+      return;
+    }
+
+    hits.forEach(function (h) {
+      var ac = ACCENTS[h.list.accent % ACCENTS.length];
+      var row = document.createElement("button");
+      row.className = "result" + (h.kind === "item" && h.item.done && !h.item.archived ? " done-hit" : "");
+      var ic = '<span class="r-ic" style="background:' + ac.soft + ';color:' + ac.fg + '">' +
+        (h.kind === "list" ? iconFor(h.list)
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>') + '</span>';
+      var title, ctx, tag;
+      if (h.kind === "list") {
+        title = h.list.title;
+        ctx = (h.list.type === "notes" ? "Notes list" : "Todo list") + (h.list.desc ? " · " + h.list.desc : "");
+        tag = "List";
+      } else {
+        title = h.item.text;
+        var bits = ["in " + h.list.title];
+        if (h.item.archived) bits.push("archived");
+        else if (h.item.done) bits.push("done");
+        if (h.item.daily) bits.push("daily");
+        if (h.viaNotes) bits.push("matched in notes");
+        ctx = bits.join(" · ");
+        tag = h.list.type === "notes" ? "Note" : "Todo";
+      }
+      row.innerHTML = ic +
+        '<span class="r-main"><span class="r-title"></span><span class="r-ctx"></span></span>' +
+        '<span class="r-tag"></span>';
+      row.querySelector(".r-title").textContent = title;
+      row.querySelector(".r-ctx").textContent = ctx;
+      row.querySelector(".r-tag").textContent = tag;
+      row.addEventListener("click", function () {
+        if (h.kind === "item" && !h.item.archived && h.list.type === "todo") selected[h.list.id] = h.item.id;
+        openList(h.list.id);
+      });
+      box.appendChild(row);
+    });
   }
   function renderStats() {
     var tTotal = 0, tDone = 0, nTotal = 0, nArch = 0, hasNotes = false;
@@ -1046,15 +1348,42 @@
 
   // ---------- List add / delete ----------
   function createList(title, desc, type) {
-    var l = { id: "l_" + uid(), title: title.trim(), desc: desc.trim(), accent: DATA.lists.length % ACCENTS.length, builtin: false, type: (type === "notes" ? "notes" : "todo"), items: [] };
+    var l = { id: "l_" + uid(), title: title.trim(), desc: desc.trim(), accent: DATA.lists.length % ACCENTS.length, builtin: false, type: (type === "notes" ? "notes" : "todo"), locked: false, salt: "", iv: "", ct: "", items: [] };
     DATA.lists.push(l); save(); renderHome();
     return l;
   }
   function deleteList(listId) {
     var l = getList(listId); if (!l || l.builtin) return;
     DATA.lists = DATA.lists.filter(function (x) { return x.id !== listId; });
-    delete selected[listId];
+    delete selected[listId]; delete sessionKey[listId]; delete unlocked[listId];
     save(); renderHome();
+  }
+  // Encrypt a list's contents under a new password (returns a promise).
+  function lockList(listId, password) {
+    var l = getList(listId); if (!l) return Promise.reject();
+    var salt = randB64(16);
+    return deriveKey(password, salt).then(function (key) {
+      l.locked = true; l.salt = salt;
+      sessionKey[listId] = key; unlocked[listId] = true; // stays usable this session
+      save(); // buildSnapshot encrypts current items
+    });
+  }
+  // Try to decrypt with the given password (returns promise<boolean>).
+  function unlockList(listId, password) {
+    var l = getList(listId); if (!l || !l.locked) return Promise.resolve(false);
+    return deriveKey(password, l.salt).then(function (key) {
+      return decryptItems(key, l.iv, l.ct).then(function (items) {
+        l.items = normItems(items);
+        sessionKey[listId] = key; unlocked[listId] = true;
+        return true;
+      });
+    }).catch(function () { return false; }); // wrong password = GCM auth failure
+  }
+  function removePassword(listId) {
+    var l = getList(listId); if (!l) return;
+    l.locked = false; l.salt = ""; l.iv = ""; l.ct = "";
+    delete sessionKey[listId]; delete unlocked[listId];
+    save(); // now stored as plaintext again
   }
 
   // ---------- Modals ----------
@@ -1069,6 +1398,9 @@
   }
   function openAddModal() {
     $("newTitle").value = ""; $("newDesc").value = ""; $("addError").textContent = "";
+    $("newPw").value = ""; $("newPw2").value = "";
+    $("protectCheck").checked = false; $("protectFields").classList.remove("show");
+    $("protectCheckWrap").style.display = hasCrypto ? "flex" : "none";
     setNewType("todo");
     openModal("addModal"); setTimeout(function () { $("newTitle").focus(); }, 50);
   }
@@ -1078,9 +1410,18 @@
     var err = $("addError");
     if (!title) { err.textContent = "Please enter a title."; $("newTitle").focus(); return; }
     if (titleExists(title)) { err.textContent = "A list with that title already exists."; $("newTitle").focus(); return; }
+    var wantPw = hasCrypto && $("protectCheck").checked;
+    var pw = $("newPw").value, pw2 = $("newPw2").value;
+    if (wantPw) {
+      if (pw.length < 4) { err.textContent = "Password must be at least 4 characters."; $("newPw").focus(); return; }
+      if (pw !== pw2) { err.textContent = "Passwords don't match."; $("newPw2").focus(); return; }
+    }
     var l = createList(title, desc, newListType);
-    closeModal("addModal");
-    toast((l.type === "notes" ? "Notes list" : "List") + " “" + l.title + "” created.");
+    var finish = function () {
+      closeModal("addModal");
+      toast((l.type === "notes" ? "Notes list" : "List") + " “" + l.title + "”" + (wantPw ? " created & locked." : " created."));
+    };
+    if (wantPw) lockList(l.id, pw).then(function () { renderHome(); finish(); }); else finish();
   }
 
   var pendingDeleteId = null;
@@ -1105,6 +1446,53 @@
     toast("List " + (l ? "“" + l.title + "” " : "") + "deleted.");
   }
 
+  // Unlock (open a locked list)
+  var pendingUnlockId = null;
+  function openUnlockModal(listId) {
+    var l = getList(listId); if (!l) return;
+    pendingUnlockId = listId;
+    $("unlockName").textContent = l.title;
+    $("unlockPw").value = ""; $("unlockError").textContent = "";
+    openModal("unlockModal"); setTimeout(function () { $("unlockPw").focus(); }, 50);
+  }
+  function submitUnlock() {
+    if (!pendingUnlockId) return;
+    var pw = $("unlockPw").value;
+    if (!pw) { $("unlockError").textContent = "Enter the password."; return; }
+    var id = pendingUnlockId;
+    $("unlockBtn").disabled = true;
+    unlockList(id, pw).then(function (ok) {
+      $("unlockBtn").disabled = false;
+      if (!ok) { $("unlockError").textContent = "Incorrect password."; $("unlockPw").select(); return; }
+      pendingUnlockId = null;
+      closeModal("unlockModal");
+      renderHome();
+      openList(id);
+    });
+  }
+
+  // Set a password on the currently open (unlocked) list
+  function openPwModal() {
+    if (!hasCrypto) { toast("Password protection isn't available in this browser context."); return; }
+    var l = getList(currentListId); if (!l) return;
+    $("pwName").textContent = l.title;
+    $("pwInput").value = ""; $("pwInput2").value = ""; $("pwError").textContent = "";
+    openModal("pwModal"); setTimeout(function () { $("pwInput").focus(); }, 50);
+  }
+  function submitSetPw() {
+    var l = getList(currentListId); if (!l) return;
+    var pw = $("pwInput").value, pw2 = $("pwInput2").value;
+    if (pw.length < 4) { $("pwError").textContent = "Password must be at least 4 characters."; return; }
+    if (pw !== pw2) { $("pwError").textContent = "Passwords don't match."; return; }
+    $("pwSetBtn").disabled = true;
+    lockList(l.id, pw).then(function () {
+      $("pwSetBtn").disabled = false;
+      closeModal("pwModal");
+      openList(l.id); // refresh tools/header
+      toast("“" + l.title + "” is now password-protected.");
+    });
+  }
+
   // ---------- View switching ----------
   var currentView = "home";
   function show(view) {
@@ -1123,9 +1511,13 @@
     var ac = ACCENTS[l.accent % ACCENTS.length];
     $("listTitle").textContent = l.title;
     var tag = $("listTag"); tag.textContent = tagLabel(l); tag.style.color = ac.fg; tag.style.background = ac.soft;
+    var hl = $("headLock"); hl.style.display = l.locked ? "inline-flex" : "none";
     $("listSub").textContent = l.desc || "";
     $("listSub").style.display = l.desc ? "block" : "none";
-    $("dangerZone").style.display = l.builtin ? "none" : "block";
+    // List tools
+    $("deleteListBtn").style.display = l.builtin ? "none" : "inline-flex";
+    $("lockBtn").style.display = (hasCrypto && !l.locked) ? "inline-flex" : "none";
+    $("removePwBtn").style.display = l.locked ? "inline-flex" : "none";
     var isNotes = l.type === "notes";
     $("todoInput").value = "";
     $("todoInput").placeholder = isNotes ? "Write a note…" : "Write a short description…";
@@ -1193,7 +1585,9 @@
   }
 
   // ---------- Wire up ----------
-  $("homeBtn").addEventListener("click", function () { show("home"); renderHome(); });
+  $("homeBtn").addEventListener("click", function () { $("searchInput").value = ""; relockAll(function () { show("home"); renderHome(); }); });
+  $("searchInput").addEventListener("input", runSearch);
+  $("searchClear").addEventListener("click", function () { $("searchInput").value = ""; runSearch(); $("searchInput").focus(); });
   $("noteBackBtn").addEventListener("click", leaveNote);
   $("openBtn").addEventListener("click", openFile);
   $("saveBtn").addEventListener("click", saveFile);
@@ -1214,8 +1608,40 @@
   document.querySelectorAll("#typeSeg [data-type]").forEach(function (b) {
     b.addEventListener("click", function () { setNewType(b.getAttribute("data-type")); });
   });
-  $("newDesc").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); submitAddList(); } });
   $("newTitle").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("newDesc").focus(); } });
+  $("protectCheck").addEventListener("change", function () { $("protectFields").classList.toggle("show", this.checked); if (this.checked) setTimeout(function () { $("newPw").focus(); }, 0); });
+
+  // Lock / unlock controls
+  $("lockBtn").addEventListener("click", openPwModal);
+  $("removePwBtn").addEventListener("click", function () {
+    var l = getList(currentListId); if (!l) return;
+    removePassword(currentListId);
+    renderHome(); openList(currentListId);
+    toast("Password removed — this list is no longer encrypted.");
+  });
+  $("unlockBtn").addEventListener("click", submitUnlock);
+  $("unlockPw").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); submitUnlock(); } });
+  $("pwSetBtn").addEventListener("click", submitSetPw);
+  $("pwInput2").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); submitSetPw(); } });
+
+  // ---------- Theme ----------
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    $("themeBtn").innerHTML = theme === "dark"
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+  }
+  function initTheme() {
+    var saved;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    if (!saved) saved = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    applyTheme(saved);
+  }
+  $("themeBtn").addEventListener("click", function () {
+    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  });
 
   $("delConfirm").addEventListener("input", function () {
     $("confirmDeleteBtn").disabled = $("delConfirm").value.trim().toLowerCase() !== "delete";
@@ -1250,6 +1676,7 @@
   document.addEventListener("visibilitychange", function () { if (!document.hidden) checkRollover(); });
   window.addEventListener("focus", checkRollover);
 
+  initTheme();
   load();
   initNoteEditor();
   resetDailies();
